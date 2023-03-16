@@ -1,0 +1,5 @@
+---
+- import_playbook: languages/playbook.yml
+- import_playbook: docker/playbook.yml
+- import_playbook: tools/playbook.yml
+- import_playbook: vscode/playbook.yml

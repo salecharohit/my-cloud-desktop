@@ -1,0 +1,12 @@
+  - name: Install Nuclei
+    shell: "go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest"
+    args:
+      executable: /bin/bash
+    ignore_errors: true
+
+# Go binaries need to be provided full path
+  - name: Update Nuclei Templates
+    shell: "/home/ubuntu/go/bin/nuclei -ut"
+    args:
+      executable: /bin/bash
+    ignore_errors: true

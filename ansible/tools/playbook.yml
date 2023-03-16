@@ -1,0 +1,56 @@
+---
+- name: Install various tools using apt package manager
+  gather_facts: True
+  hosts: all
+  vars: 
+    tools_dir: "/home/ubuntu/tools"
+
+  tasks:
+    - name: Create Tools Directory
+      file:
+        state: directory
+        path: "{{ tools_dir }}"
+        mode: 0755
+
+    - name: Install a list of tools through apt
+      become: yes
+      apt:
+        pkg:
+        - nmap
+        - sqlmap
+        - net-tools
+  
+    - name: Install Multiple Python Tools from Pip3
+      pip:
+        name:
+          - semgrep
+          - awscli
+          - docker-py
+        executable: pip3
+
+# Please check link https://apt.metasploit.com/ for newer images or if 404 errors.
+    - name: Install Metasploit
+      become: yes
+      apt:
+        deb: https://apt.metasploit.com/pool/main/m/metasploit-framework/metasploit-framework_6.3.7%2B20230312102558~1rapid7-1_amd64.deb
+        install_recommends: true
+      ignore_errors: true
+
+    - name: Install Nuclei
+      include_tasks: nuclei.yml
+
+    - name: Install Spoofy
+      include_tasks: spoofy.yml     
+
+    - name: Clone TestSSL
+      git:
+        repo: 'https://github.com/drwetter/testssl.sh.git'
+        dest: "{{ tools_dir }}/testssl"
+        depth: 1
+
+    - name: Clone Smuggler
+      git:
+        repo: 'https://github.com/defparam/smuggler.git'
+        dest: "{{ tools_dir }}/smuggler"
+        depth: 1
+

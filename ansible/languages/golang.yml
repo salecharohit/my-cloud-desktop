@@ -1,0 +1,29 @@
+  - name: add golang ppa for Ubuntu
+    apt_repository:
+      repo: 'ppa:longsleep/golang-backports'
+      state: present
+    become: yes
+
+  - name: Install Go Lang
+    apt:
+      name: golang-go
+      state: latest
+      install_recommends: true
+      update_cache: true
+    become: yes
+
+  - name: modify .bashrc for go
+    blockinfile:
+      dest: "{{home_dir}}/.bashrc"
+      block: |
+        export GOPATH={{home_dir}}/go
+        export GOBIN=$GOPATH/bin
+        export PATH=$GOBIN:$PATH
+      marker: '# {mark} ANSIBLE MANAGED BLOCK - changes for golang'
+      insertafter: EOF
+      create: yes
+
+  - name: Refresh bashrc
+    shell: "source {{home_dir}}/.bashrc"
+    args:
+      executable: /bin/bash

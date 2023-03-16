@@ -1,0 +1,11 @@
+  - name: Clone Spoofy
+    git:
+      repo: 'https://github.com/MattKeeley/Spoofy.git'
+      dest: "{{ tools_dir }}/spoofy"
+      depth: 1
+
+  - name: Install Spoofy pip3 requirements
+    pip:
+      chdir: "{{ tools_dir }}/spoofy"
+      executable: pip3
+      requirements: requirements.txt

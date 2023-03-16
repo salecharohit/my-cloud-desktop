@@ -1,0 +1,10 @@
+# Region of deployment of EC2, its recommended to deploy closest possible to avoid latency
+region                      = "ap-south-1"
+# Recommneded is t3.medium or select from here https://instances.vantage.sh/
+instance_type               = "t3.medium"
+#Whether to apply source IP restrictions for SSH Access. IP Address from where you are executing the terraform script will be used to restrict #SSH Access. Check file networking.tf L30
+apply_source_ip_restriction = true
+duckdns_token               = "XXXXXXXXXXXXXXXXXXXXXXXXXX"
+duckdns_hostname            = "XXXXXXXXXXXX.duckdns.org"
+email                       = "XXXXXX@XXXXXX.com"
+vscode_password             = "XXXXXXXXXXXXXXXXXXXXXX"

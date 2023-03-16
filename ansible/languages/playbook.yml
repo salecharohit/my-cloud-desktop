@@ -1,0 +1,23 @@
+---
+- name: Installs all languages generally needed
+  gather_facts: true
+  hosts: all
+  become: yes
+  vars:
+      home_dir: "/home/ubuntu"  
+
+  tasks:
+  - name: Install Python3-Pip
+    apt:
+      name: python3-pip
+      state: latest
+      update_cache: true
+
+  - name: Install Java JDK
+    apt:
+      name: default-jdk
+      state: latest
+      install_recommends: true
+
+  - name: Install GoLang
+    include_tasks: golang.yml

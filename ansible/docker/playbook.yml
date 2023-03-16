@@ -1,0 +1,11 @@
+---
+- name: Installs Docker on Ubuntu
+  gather_facts: True
+  hosts: all
+
+  roles:
+  - role: Docker
+    become: yes
+    vars:
+      docker_users: ["ubuntu","ubuntu"]
+      docker_install_compose: true
