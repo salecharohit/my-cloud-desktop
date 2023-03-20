@@ -54,3 +54,8 @@
         dest: "{{ tools_dir }}/smuggler"
         depth: 1
 
+    - name: Install Cloudlist
+      shell: "go install -v github.com/projectdiscovery/cloudlist/cmd/cloudlist@latest"
+      args:
+        executable: /bin/bash
+      ignore_errors: true
