@@ -3,19 +3,18 @@
 variable "key_name" {
   description = "SSH Key Name For Authentication"
   type        = string
-  default     = "ubuntu"
 }
 
 ######################## MAIN ########################
 
-resource "tls_private_key" "ubuntu" {
+resource "tls_private_key" "ide" {
   algorithm = "RSA"
   rsa_bits  = 2048
 }
 
 resource "aws_key_pair" "generated_key" {
   key_name   = var.key_name
-  public_key = tls_private_key.ubuntu.public_key_openssh
+  public_key = tls_private_key.ide.public_key_openssh
 
 }
 
@@ -44,7 +43,7 @@ resource "aws_key_pair" "generated_key" {
 # }
 
 resource "local_file" "ubuntu_key" {
-  content         = tls_private_key.ubuntu.private_key_pem
-  filename        = "ubuntu_key.pem"
+  content         = tls_private_key.ide.private_key_pem
+  filename        = "${var.key_name}.pem"
   file_permission = "400"
 }

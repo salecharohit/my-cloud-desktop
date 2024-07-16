@@ -2,7 +2,7 @@
 - name: Installs all languages generally needed
   gather_facts: true
   hosts: all
-  become: yes
+  become: true
   vars:
       home_dir: "/home/ubuntu"  
 

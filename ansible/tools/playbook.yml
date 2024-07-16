@@ -13,12 +13,13 @@
         mode: 0755
 
     - name: Install a list of tools through apt
-      become: yes
+      become: true
       apt:
         pkg:
         - nmap
         - sqlmap
         - net-tools
+        - unzip
   
     - name: Install Multiple Python Tools from Pip3
       pip:
@@ -30,32 +31,47 @@
 
 # Please check link https://apt.metasploit.com/ for newer images or if 404 errors.
     - name: Install Metasploit
-      become: yes
+      become: true
       apt:
-        deb: https://apt.metasploit.com/pool/main/m/metasploit-framework/metasploit-framework_6.3.7%2B20230312102558~1rapid7-1_amd64.deb
+        deb: https://apt.metasploit.com/pool/main/m/metasploit-framework/metasploit-framework_6.4.17~20240709102842~1rapid7-1_amd64.deb
         install_recommends: true
       ignore_errors: true
 
     - name: Install Nuclei
       include_tasks: nuclei.yml
+      
+    - name: Download kubectl
+      get_url:
+        url: https://dl.k8s.io/release/v1.24.0/bin/linux/amd64/kubectl
+        dest: /usr/local/bin/kubectl
+        mode: '0755'
+      become: true
 
-    - name: Install Spoofy
-      include_tasks: spoofy.yml     
+    - name: Download Opa
+      get_url:
+        url: https://github.com/open-policy-agent/opa/releases/download/v0.57.0/opa_linux_amd64
+        dest: /usr/local/bin/opa
+        mode: '0755'
+      become: true
 
-    - name: Clone TestSSL
-      git:
-        repo: 'https://github.com/drwetter/testssl.sh.git'
-        dest: "{{ tools_dir }}/testssl"
-        depth: 1
+    - name: Download mdbook
+      unarchive:
+        src: https://github.com/rust-lang/mdBook/releases/download/v0.4.35/mdbook-v0.4.35-x86_64-unknown-linux-gnu.tar.gz
+        dest: /usr/local/bin/
+        remote_src: yes
+        mode: '0755'
+      become: true
 
-    - name: Clone Smuggler
-      git:
-        repo: 'https://github.com/defparam/smuggler.git'
-        dest: "{{ tools_dir }}/smuggler"
-        depth: 1
+    - name: Download BFG Jar
+      get_url:
+        url: https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
+        dest: "{{ tools_dir }}/bfg.jar"
+        mode: '0755'
 
-    - name: Install Cloudlist
-      shell: "go install -v github.com/projectdiscovery/cloudlist/cmd/cloudlist@latest"
-      args:
-        executable: /bin/bash
-      ignore_errors: true
+    - name: Download Terraform
+      unarchive:
+        src: https://releases.hashicorp.com/terraform/1.4.0/terraform_1.4.0_linux_amd64.zip
+        dest: /usr/local/bin/
+        remote_src: yes
+        mode: '0755'
+      become: true

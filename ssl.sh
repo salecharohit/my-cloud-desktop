@@ -5,4 +5,4 @@ until [[ -f /var/lib/cloud/instance/boot-finished ]]; do
 done
 
 sudo apt update -y
-ansible-playbook -i ~/ansible/inventory -e "hostname=$1 email=$2" ~/ansible/nginx/playbook.yml
+ansible-playbook -i ~/ansible/inventory -e "hostname=$1" ~/ansible/caddy/playbook.yml

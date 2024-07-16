@@ -3,7 +3,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.19.0"
 
-  name                         = "cloud-desktop-vpc"
+  name                         = "${var.user_name}-vpc"
   cidr                         = var.vpc_cidr
   enable_dns_hostnames         = true
   enable_dns_support           = true
@@ -17,7 +17,7 @@ module "vpc" {
   create_database_subnet_group = false
 
   tags = {
-    "Name"            = "ec2-vpc"
+    "Name"            = "${var.user_name}-vpc"
     "Environment"     = var.environment
     terraform-managed = "true"
   }

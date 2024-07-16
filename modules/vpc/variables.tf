@@ -8,6 +8,11 @@ variable "environment" {
   type        = string
 }
 
+variable "user_name" {
+  description = "username"
+  type        = string
+}
+
 variable "database_subnets_cidr" {
   type        = list(any)
   description = "The CIDR block for the public subnet"

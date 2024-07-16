@@ -1,0 +1,63 @@
+---
+- name: Install Caddy and configure it.
+  gather_facts: True
+  hosts: all
+  become: true
+  vars: 
+    hostname: "{{ hostname }}"
+    
+  tasks:
+    - name: Install Debian keyrings and apt-transport-https
+      apt:
+        name:
+          - debian-keyring
+          - debian-archive-keyring
+          - apt-transport-https
+        state: present
+      register: debian_keyring_result
+
+    - name: Download Caddy GPG key
+      get_url:
+        url:  https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+        dest: /etc/apt/trusted.gpg.d/caddy-stable-archive-keyring.asc
+
+    - name:  Add Caddy repository to sources.list.d
+      apt_repository:
+        repo:  "deb [signed-by=/etc/apt/trusted.gpg.d/caddy-stable-archive-keyring.asc] https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main"
+        state: present
+        update_cache: yes
+
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+      when: debian_keyring_result.changed
+
+    - name: Install Caddy
+      apt:
+        name: caddy
+        state: present
+      register: caddy_install_result
+      when: debian_keyring_result.changed
+
+    - name: Enable and start Caddy service
+      systemd:
+        name: caddy
+        enabled: yes
+        state: started
+      when: caddy_install_result.changed
+              
+    - name: Write Caddyfile
+      template:
+        src: Caddyfile.j2
+        dest: /etc/caddy/Caddyfile
+        owner: root
+        group: root
+        mode: a+rx
+      notify: Restart Caddy
+      when: caddy_install_result.changed      
+
+  handlers:
+    - name: Restart Caddy
+      systemd:
+        name: caddy
+        state: reloaded
