@@ -3,9 +3,11 @@
 ## What does this code do ?
 
 - Spins up an EC2 Ubuntu Focal (:heart:) 
-- Configures it with my most used softwares - VSCode,NMap,Nuclei,Semgrep,awscli and some pentest tools.
+- Configures it with my most used softwares - VSCode,NMap,Nuclei,Semgrep,awscli,terraform and some pentest tools.
 - Configures the IDE on a domain of your choice, provided its configured in Route53.
 - Have a Source IP restriction such that it is accessible only from a specific IP Address like my home ip.
+
+![m-cloud-desktop](featured.png)
 
 ## Setup
 
@@ -32,6 +34,3 @@
 - Destroy the Hosted Zone else you'll be charged $0.5 USD per month
 
 `aws route53 delete-hosted-zone --id $(aws route53 list-hosted-zones --query "HostedZones[?Name == 'www.domain.com.'].Id" --output text | sed 's|/hostedzone/||')`
-
-
-
