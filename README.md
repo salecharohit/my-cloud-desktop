@@ -9,6 +9,8 @@
 
 ![m-cloud-desktop](featured.png)
 
+[https://www.rohitsalecha.com/project/my_cloud_desktop/](https://www.rohitsalecha.com/project/my_cloud_desktop/)
+
 ## Setup
 
 - Firstly, you need a hosted zone in your Route53 , for this fire the below command using an privileged user in AWS.
