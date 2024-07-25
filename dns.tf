@@ -13,11 +13,15 @@ data "aws_route53_zone" "domain" {
 
 }
 
+locals {
+  domain_name = "ide.${var.hostname}"
+}
+
 ######################## MAIN ########################
 
 resource "aws_route53_record" "ide" {
   zone_id = data.aws_route53_zone.domain.zone_id
-  name    = "${var.hostname}"
+  name    = "${local.domain_name}"
   type    = "A"
   ttl     = 300
   records = [aws_instance.ide.public_ip]
@@ -48,7 +52,7 @@ resource "terraform_data" "implement_ssl" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/ssl.sh",
-      "/tmp/ssl.sh ${var.hostname}",
+      "/tmp/ssl.sh ${local.domain_name}",
     ]
   }
 
