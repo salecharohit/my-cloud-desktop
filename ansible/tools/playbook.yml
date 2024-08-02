@@ -27,6 +27,7 @@
           - semgrep
           - awscli
           - docker-py
+          - awsmfa
         executable: pip3
 
 # Please check link https://apt.metasploit.com/ for newer images or if 404 errors.
